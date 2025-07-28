@@ -2,57 +2,58 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Design system for Prinak Ghosh Portfolio - Dark theme with glass morphism */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Dark theme colors */
+    --background: 0 0% 10%;
+    --foreground: 0 0% 98%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 0 0% 95%;
+    --card-foreground: 0 0% 15%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 95%;
+    --popover-foreground: 0 0% 15%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 15%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 0 0% 20%;
+    --secondary-foreground: 0 0% 98%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 0 0% 85%;
+    --muted-foreground: 0 0% 45%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 0 0% 85%;
+    --accent-foreground: 0 0% 15%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 0 0% 85%;
+    --input: 0 0% 85%;
+    --ring: 0 0% 15%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Glass morphism effects */
+    --glass-bg: 255 255 255 / 0.05;
+    --glass-border: 255 255 255 / 0.1;
+    --glass-nav: 255 255 255 / 0.95;
+    
+    /* Gradients */
+    --gradient-dark: linear-gradient(135deg, hsl(0 0% 10%) 0%, hsl(0 0% 18%) 50%, hsl(0 0% 10%) 100%);
+    --gradient-profile: linear-gradient(45deg, hsl(0 0% 20%), hsl(0 0% 40%));
+    --gradient-about: linear-gradient(45deg, hsl(0 0% 27%), hsl(0 0% 40%));
+    
+    /* Shadows */
+    --shadow-glass: 0 10px 30px hsl(0 0% 0% / 0.3);
+    --shadow-card: 0 10px 30px hsl(0 0% 0% / 0.5);
+    --shadow-hover: 0 15px 40px hsl(0 0% 0% / 0.4);
+    
+    /* Animation */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .dark {
@@ -100,6 +101,52 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    background: var(--gradient-dark);
+    @apply text-foreground;
+    min-height: 100vh;
+  }
+}
+
+@layer components {
+  /* Glass morphism utilities */
+  .glass-card {
+    background: rgba(var(--glass-bg));
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(var(--glass-border));
+    box-shadow: var(--shadow-glass);
+  }
+  
+  .glass-nav {
+    background: rgba(var(--glass-nav));
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow-glass);
+  }
+  
+  /* Animations */
+  .fade-in-up {
+    animation: fadeInUp 1s ease both;
+  }
+  
+  .fade-in-up-delay-1 {
+    animation: fadeInUp 1s ease 0.2s both;
+  }
+  
+  .fade-in-up-delay-2 {
+    animation: fadeInUp 1s ease 0.4s both;
+  }
+  
+  .fade-in-up-delay-3 {
+    animation: fadeInUp 1s ease 0.6s both;
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 }
