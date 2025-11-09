@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ProjectModal } from "./ProjectModal";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 export interface Project {
-  id: number;
+  id: string;
   title: string;
   description: string;
   tools: string;
@@ -11,32 +13,78 @@ export interface Project {
   githubLink?: string;
 }
 
-const initialProjects: Project[] = [
-  {
-    id: 1,
-    title: "Object Descriptions - Material Discovery Platform",
-    description: "Every object around us tells a hidden story of its materials. From the magnesium alloy in your camera to the mesh fabric of your chair, these materials shape how we live, create, and move through the world. We built this space to help you discover what everyday objects are truly made of.\n\nEach image you see here is more than just a product—it is a layered composition of metals, fabrics, polymers, and glass working together to create comfort, precision, and beauty in your day-to-day life. Whether you're a designer seeking inspiration, a student learning material science, or simply someone who appreciates the craftsmanship behind objects, our goal is to make the invisible layers of everyday life visible.",
-    tools: "Designed with Lovable, developed and version-controlled via GitHub, refined in Cursor, structured in Bolt, and deployed seamlessly on Netlify.",
-    liveLink: "https://objectdescription-assignment.netlify.app/",
-    githubLink: "https://github.com/Prinak-Ghosh/object-showcase"
-  }
-];
-
 export const Portfolio = () => {
-  const [projects, setProjects] = useState<Project[]>(initialProjects);
+  const [projects, setProjects] = useState<Project[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { toast } = useToast();
 
-  const addProject = (project: Omit<Project, 'id'>) => {
-    const newProject = {
-      ...project,
-      id: Date.now()
-    };
-    setProjects([...projects, newProject]);
+  useEffect(() => {
+    fetchProjects();
+  }, []);
+
+  const fetchProjects = async () => {
+    const { data, error } = await supabase
+      .from('projects')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      toast({
+        title: "Error fetching projects",
+        description: error.message,
+        variant: "destructive",
+      });
+    } else {
+      setProjects(data || []);
+    }
   };
 
-  const deleteProject = (id: number) => {
+  const addProject = async (project: Omit<Project, 'id'>) => {
+    const { error } = await supabase
+      .from('projects')
+      .insert([{
+        title: project.title,
+        description: project.description,
+        tools: project.tools,
+        live_link: project.liveLink,
+        github_link: project.githubLink
+      }]);
+
+    if (error) {
+      toast({
+        title: "Error adding project",
+        description: error.message,
+        variant: "destructive",
+      });
+    } else {
+      toast({
+        title: "Success",
+        description: "Project added successfully",
+      });
+      fetchProjects();
+    }
+  };
+
+  const deleteProject = async (id: string) => {
     if (confirm('Are you sure you want to delete this project?')) {
-      setProjects(projects.filter(project => project.id !== id));
+      const { error } = await supabase
+        .from('projects')
+        .delete()
+        .eq('id', id);
+
+      if (error) {
+        toast({
+          title: "Error deleting project",
+          description: error.message,
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Success",
+          description: "Project deleted successfully",
+        });
+        fetchProjects();
+      }
     }
   };
 
