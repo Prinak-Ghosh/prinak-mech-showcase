@@ -35,7 +35,16 @@ export const Portfolio = () => {
         variant: "destructive",
       });
     } else {
-      setProjects(data || []);
+      // Map snake_case database columns to camelCase
+      const mappedData = data?.map(project => ({
+        id: project.id,
+        title: project.title,
+        description: project.description,
+        tools: project.tools,
+        liveLink: project.live_link,
+        githubLink: project.github_link,
+      })) || [];
+      setProjects(mappedData);
     }
   };
 
