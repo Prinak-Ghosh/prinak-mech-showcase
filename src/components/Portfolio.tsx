@@ -138,7 +138,7 @@ export const Portfolio = () => {
                     href={project.liveLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-block bg-primary text-primary-foreground font-semibold py-2 px-4 rounded-lg hover:bg-primary/90 transition-colors"
+                    className="inline-block bg-foreground text-background font-semibold py-3 px-6 rounded-lg hover:bg-foreground/90 transition-all duration-300 hover:shadow-lg"
                   >
                     View Live Project
                   </a>
@@ -148,7 +148,7 @@ export const Portfolio = () => {
                     href={project.githubLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-block border border-primary text-primary font-semibold py-2 px-4 rounded-lg hover:bg-primary hover:text-primary-foreground transition-colors"
+                    className="inline-block border-2 border-foreground text-foreground font-semibold py-3 px-6 rounded-lg hover:bg-foreground hover:text-background transition-all duration-300"
                   >
                     GitHub Repository
                   </a>
